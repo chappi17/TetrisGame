@@ -3,8 +3,18 @@
 #include "game.h"
 using namespace std;
 
-Color darkGreen = Color{20,160,133,255};
+double lastUpdatedTime= 0;
 
+bool EventTriggred(double interval)
+{
+    double currentTime = GetTime();
+    if(currentTime - lastUpdatedTime >= interval)
+    {
+        lastUpdatedTime = currentTime;
+        return true;
+    }
+    return false;
+}
 
 int main () {
 
@@ -19,6 +29,10 @@ int main () {
     while (WindowShouldClose() == false)
     {
         game.HandleInput();
+        if(EventTriggred(0.2))
+        {
+            game.MoveBlockDown();
+        }
         BeginDrawing();
         ClearBackground(DARKBLUE);
         game.Draw();

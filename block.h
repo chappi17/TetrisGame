@@ -12,6 +12,8 @@ class Block
     Block();
     void Draw();
     void Move(int rows, int columns);
+    void Rotate();
+    void UndoRatation();
     int id;
     map<int,vector<Position>> cells;  
     vector<Position> GetCellPositions(); 
