@@ -1,6 +1,7 @@
 #include <iostream>
 #include <raylib.h>
 #include "grid.h"
+#include "blocks.cpp"
 using namespace std;
 
 Color darkGreen = Color{20,160,133,255};
@@ -15,15 +16,17 @@ int main () {
     SetTargetFPS(60);
 
     Grid grid = Grid();
-    grid.grid[0][0] = 1;
-    grid.grid[3][5] = 4;
-    grid.grid[17][8] = 7;
     grid.Print();
+
+    LBlock lblock = LBlock();
+    TBlock tblock = TBlock();
+
     while (WindowShouldClose() == false)
     {
         BeginDrawing();
         ClearBackground(DARKBLUE);
         grid.Draw();
+        tblock.Draw();
 
         EndDrawing();
     }

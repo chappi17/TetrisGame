@@ -10,15 +10,14 @@ class Block
 {
     public:
     Block();
+    void Draw();
     int id;
 
     map<int,vector<Position>> cells;    
 
-~Block();
-
     private:
     int cellSize;
-    int roattionState;
+    int rotationState;
     std::vector<Color> colors;
 
 };
