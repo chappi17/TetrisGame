@@ -1,7 +1,6 @@
 #include <iostream>
 #include <raylib.h>
-#include "grid.h"
-#include "blocks.cpp"
+#include "game.h"
 using namespace std;
 
 Color darkGreen = Color{20,160,133,255};
@@ -15,20 +14,14 @@ int main () {
     InitWindow(screenWidth, screenHeight, "Tetris Game");
     SetTargetFPS(60);
 
-    Grid grid = Grid();
-    grid.Print();
-
-    LBlock lblock = LBlock();
-    TBlock tblock = TBlock();
-    tblock.Move(4,3);
+    Game game = Game();
 
     while (WindowShouldClose() == false)
     {
+        game.HandleInput();
         BeginDrawing();
         ClearBackground(DARKBLUE);
-        grid.Draw();
-        tblock.Draw();
-
+        game.Draw();
         EndDrawing();
     }
 
