@@ -20,6 +20,7 @@ int main () {
 
     LBlock lblock = LBlock();
     TBlock tblock = TBlock();
+    tblock.Move(4,3);
 
     while (WindowShouldClose() == false)
     {
