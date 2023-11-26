@@ -117,6 +117,7 @@ void Game::LockBlock()
     currentBlock = nextBlock;
     // Constructor has assign newxBlock = GetRandomBlock() but, after that nextBlock need to reassign GetRandomBlock. 
     nextBlock = GetRandomBlock();
+    grid.ClearFullRows();
 }
 
 bool Game::BlockFits()
