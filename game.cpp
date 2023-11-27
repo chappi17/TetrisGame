@@ -9,6 +9,19 @@ Game::Game()
     nextBlock = GetRandomBlock();
     GameOver = false;
     score = 0;
+    InitAudioDevice();
+    music = LoadMusicStream("Sound/music.mp3");
+    PlayMusicStream(music);
+    rotateSound = LoadSound("Sound/rotate.mp3");
+    clearSound = LoadSound("Sound/clear.mp3");
+}
+
+Game::~Game()
+{
+    UnloadSound(clearSound);
+    UnloadSound(rotateSound);
+    UnloadMusicStream(music);
+    CloseAudioDevice();
 }
 
 Block Game::GetRandomBlock()
@@ -32,7 +45,20 @@ vector<Block> Game::GetAllBlocks()
 void Game::Draw()
 {
     grid.Draw();
-    currentBlock.Draw();
+    currentBlock.Draw(11,11);
+    switch (nextBlock.id)
+    {
+    case 3:
+        nextBlock.Draw(255,290);
+        break;
+    case 4:
+        nextBlock.Draw(255,280);
+        break;
+    
+    default:
+        nextBlock.Draw(270,270);
+        break;
+    };
 }
 
 void Game::HandleInput()
@@ -57,6 +83,9 @@ void Game::HandleInput()
         break;
     case KEY_UP:
         RotateBlock();
+        break;
+    case KEY_SPACE:
+        SpaceBar();
         break;
 
     default:
@@ -101,6 +130,19 @@ void Game::MoveBlockDown()
     }
 }
 
+void Game::SpaceBar()
+{
+    if(!GameOver)
+    {
+        while (!IsBlockOutSide() && BlockFits())
+        {
+            currentBlock.Move(1,0);
+        }
+        currentBlock.Move(-1,0);
+        LockBlock();
+    }
+}
+
 bool Game::IsBlockOutSide()
 {
     std::vector<Position> tiles = currentBlock.GetCellPositions();
@@ -124,6 +166,10 @@ void Game::RotateBlock()
             currentBlock.UndoRatation();
         }
     }
+    else
+    {
+        PlaySound(rotateSound);
+    }
 }
 
 void Game::LockBlock()
@@ -141,7 +187,11 @@ void Game::LockBlock()
     // Constructor has assign newxBlock = GetRandomBlock() but, after that nextBlock need to reassign GetRandomBlock.
     nextBlock = GetRandomBlock();
     int rowCleared = grid.ClearFullRows();
-    UpdateScore(rowCleared,0);
+    if(rowCleared > 0)
+    {
+        PlaySound(clearSound);
+        UpdateScore(rowCleared,0);
+    }
 }
 
 bool Game::BlockFits()
