@@ -8,6 +8,7 @@ Game::Game()
     currentBlock = GetRandomBlock();
     nextBlock = GetRandomBlock();
     GameOver = false;
+    score = 0;
 }
 
 Block Game::GetRandomBlock()
@@ -139,7 +140,8 @@ void Game::LockBlock()
     }
     // Constructor has assign newxBlock = GetRandomBlock() but, after that nextBlock need to reassign GetRandomBlock.
     nextBlock = GetRandomBlock();
-    grid.ClearFullRows();
+    int rowCleared = grid.ClearFullRows();
+    UpdateScore(rowCleared,0);
 }
 
 bool Game::BlockFits()
@@ -161,4 +163,27 @@ void Game::Reset()
     blocks= GetAllBlocks();
     currentBlock = GetRandomBlock();
     nextBlock = GetRandomBlock();
+    score =0;
 }
+
+void Game::UpdateScore(int lineCleared, int moveDownPoints)
+{
+    switch (lineCleared)
+    {
+    case 1:
+        score += 100;
+        break;
+    case 2 :
+        score += 300;
+        break;
+    case 3 :
+        score += 500;
+        break;
+    default:
+        break;
+    }
+
+    score+= moveDownPoints;
+}
+
+
